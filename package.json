@@ -20,8 +20,8 @@
     "bluebird": "^3.4.0",
     "koa": "^1.2.0",
     "koa-body": "^1.4.0",
-    "koa-bodyparser": "^2.2.0",
     "koa-router": "^5.4.0",
+    "monk": "^1.0.1",
     "opentok": "^2.3.2",
     "ramda": "^0.21.0"
   }
