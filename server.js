@@ -1,24 +1,27 @@
+/** Imports */
 const app = require('koa')();
 const router = require('koa-router')();
 const koaBody = require('koa-body')();
 
 
+/** Routes */
 const api = require('./services/api');
+const auth = require('./services/auth');
+router.post('/token', api.getToken);
+router.post('/session', api.getSession);
+router.post('/credentials', api.getCredentials);
+router.post('/whitelist', auth.isAdmin, auth.registerDomain);
 
-router.get('/', function* () {
-  this.body = 'OpenTok Service';
+router.get('*', function* () {
+  this.body = 'OpenTok Service: مرحبا';
 });
 
-router.post('/session', koaBody, api.getSession);
-
-router.post('/token', koaBody, api.getToken);
-
+/** Middleware */
 app
-  .use(router.routes())
   .use(router.allowedMethods())
-  .use(function* (next) {
-    this.app = this.request.host;
-    yield next;
-  });
+  .use(koaBody)
+  .use(auth.validDomain)
+  .use(router.routes());
 
-app.listen(3000);
+/** Listen */
+app.listen(process.env.PORT || 3000);
